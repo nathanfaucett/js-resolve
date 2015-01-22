@@ -68,11 +68,3 @@ helpers.isNotRelative = function(path) {
     var ch = path[0];
     return ch !== "." && ch !== "/";
 };
-
-function ensureRelative(path) {
-    return helpers.isNotRelative(path) ? "./" + path : path;
-}
-
-helpers.relative = function(dir, path, forceRelative) {
-    return forceRelative !== false ? ensureRelative(filePath.relative(dir, path)) : filePath.relative(dir, path);
-};
