@@ -23,6 +23,7 @@
   "dependencies": {
     "is_array": "nathanfaucett/is_array",
     "is_string": "nathanfaucett/is_string",
-    "file_path": "nathanfaucett/file_path"
+    "file_path": "nathanfaucett/file_path",
+    "resolve": "nathanfaucett/resolve"
   }
 }

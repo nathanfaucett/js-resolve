@@ -3,7 +3,10 @@ var helpers = require("./helpers"),
     resolveModule = require("./resolve_module");
 
 
-module.exports = function resolve(path, parentDirname, options) {
+module.exports = resolve;
+
+
+function resolve(path, parentDirname, options) {
     options = options || {};
 
     options.exts = options.exts || ["js", "json"];
@@ -17,4 +20,6 @@ module.exports = function resolve(path, parentDirname, options) {
     } else {
         return resolveFile(path, parentDirname, options);
     }
-};
+}
+
+resolve.helpers = helpers;
