@@ -1,0 +1,28 @@
+{
+  "name": "resolve",
+  "version": "0.0.1",
+  "description": "resolve paths/node_modules for node.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathanfaucett/resolve.git"
+  },
+  "main": "src/index.js",
+  "keywords": [
+    "resolve",
+    "resolve.js"
+  ],
+  "author": "Nathan Faucett",
+  "license": "BSD-2-Clause",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-jsbeautifier": "^0.2.7",
+    "mocha": "^2.1.0"
+  },
+  "dependencies": {
+    "is_array": "nathanfaucett/is_array",
+    "is_string": "nathanfaucett/is_string",
+    "file_path": "nathanfaucett/file_path"
+  }
+}
