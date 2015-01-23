@@ -48,20 +48,12 @@ helpers.ensureExt = function(path, exts) {
     return helpers.hasExt(path, exts) ? path : path + "." + (isArray(exts) ? exts[0] : exts + "");
 };
 
-helpers.packagePath = function(pkg, browser) {
-    if (browser === false) {
-        return (
-            isString(pkg.main) ? pkg.main : (
-                isString(pkg.browser) ? pkg.browser : "index"
-            )
-        );
-    } else {
-        return (
-            isString(pkg.browser) ? pkg.browser : (
-                isString(pkg.main) ? pkg.main : "index"
-            )
-        );
-    }
+helpers.packagePath = function(pkg, type) {
+    return (
+        isString(pkg[type]) ? pkg[type] : (
+            isString(pkg.main) ? pkg.main : "index"
+        )
+    );
 };
 
 helpers.isNotRelative = function(path) {

@@ -65,7 +65,7 @@ function resolveModule(path, parentDirname, options) {
             result.pkg = pkg;
             result.version = pkg.version;
 
-            tmp2 = helpers.ensureExt(filePath.join(filePath.dir(tmp1), helpers.packagePath(pkg)), exts);
+            tmp2 = helpers.ensureExt(filePath.join(filePath.dir(tmp1), helpers.packagePath(pkg, options.packageType)), exts);
 
             if (fs.existsSync(tmp2)) {
                 if (relativePath) {

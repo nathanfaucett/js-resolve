@@ -28,7 +28,7 @@ function resolveFile(path, parentDirname, options) {
             pkg = helpers.findPackageJSON(tmp1);
 
             if (pkg !== null) {
-                tmp2 = helpers.ensureExt(filePath.join(filePath.dir(tmp1), helpers.packagePath(pkg, options.browser)), exts);
+                tmp2 = helpers.ensureExt(filePath.join(filePath.dir(tmp1), helpers.packagePath(pkg, options.packageType)), exts);
 
                 if (fs.existsSync(tmp2)) {
                     result.fullPath = tmp2;
