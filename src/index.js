@@ -13,7 +13,7 @@ function resolve(path, parentDirname, options) {
     options.exts = options.exts || ["js", "json"];
     options.encoding = options.encoding || "utf-8";
     options.builtin = options.builtin != null ? options.builtin : {};
-    options.packageType = isString(options.packageType) ? !!options.packageType : "browser";
+    options.packageType = isString(options.packageType) ? options.packageType : "browser";
     options.throwError = options.throwError != null ? !!options.throwError : true;
 
     if (helpers.isNotRelative(path)) {
