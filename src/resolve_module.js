@@ -20,16 +20,22 @@ function resolveModule(path, parentDirname, options) {
         builtin = options.builtin,
         exts = options.exts,
 
-        id, root, depth, tmp1, tmp2, tmp3, tmp4, stat, error, found;
+        id, root, depth, builtinInfo, tmp1, tmp2, tmp3, tmp4, stat, error, found;
 
     if (relativePath && relativePath[0] === "/") {
         relativePath = relativePath.slice(1);
     }
 
     if (builtin[moduleName]) {
-        tmp1 = resolveBuiltinPackage(builtin[moduleName]);
+        builtinInfo = resolveBuiltinPackage(moduleName, builtin[moduleName]);
 
-        if (fs.existsSync(tmp1)) {
+        if (builtinInfo === false) {
+            found = false;
+        } else if (builtinInfo.fullPath) {
+            result.fullPath = builtinInfo.fullPath;
+            return result;
+        } else {
+            tmp1 = builtinInfo;
             found = true;
         }
     } else {
@@ -122,21 +128,34 @@ function resolveModule(path, parentDirname, options) {
     return result;
 }
 
-function resolveBuiltinPackage(modulePath) {
+function resolveBuiltinPackage(moduleName, modulePath) {
     var id = "package.json",
         root = filePath.dir(modulePath),
         depth = root.split(reSpliter).length,
         tmp1 = filePath.join(root, id),
-        found = false;
+        found = false,
+        pkg;
 
     while (!found && depth-- > 0) {
         tmp1 = filePath.join(root, id);
         root = root + "/../";
 
-        if (fs.existsSync(tmp1)) {
-            found = true;
+        try {
+            pkg = helpers.readJSONFile(tmp1);
+        } catch (err) {
+            pkg = null;
+        }
+
+        if (pkg && pkg.name === moduleName) {
+            return tmp1;
         }
     }
 
-    return tmp1;
+    if (!fs.existsSync(modulePath)) {
+        return false;
+    }
+
+    return {
+        fullPath: modulePath
+    };
 }

@@ -14,5 +14,15 @@ describe("resolve(path : FilePath String, parentDirname : FilePath String, optio
 
         assert.equal(!!resolve("../src/index", __dirname, options), true);
         assert.equal(resolve("../test", __dirname, options), null);
+
+        assert.equal(!!resolve("is_string", __dirname, {
+                exts: ["js", "json"],
+                throwError: false,
+                builtin: {
+                    "is_string": __dirname + "/empty.js"
+                }
+            }),
+            true
+        );
     });
 });
