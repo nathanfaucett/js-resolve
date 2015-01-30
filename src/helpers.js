@@ -48,6 +48,25 @@ helpers.ensureExt = function(path, exts) {
     return helpers.hasExt(path, exts) ? path : path + "." + (isArray(exts) ? exts[0] : exts + "");
 };
 
+function findExt(path, exts) {
+    var i = -1,
+        il = exts.length - 1,
+        tmp;
+
+    while (i++ < il) {
+        tmp = path + "." + exts[i];
+
+        if (fs.existsSync(tmp)) {
+            return tmp;
+        }
+    }
+    return false;
+}
+
+helpers.findExt = function(path, exts) {
+    return helpers.hasExt(path, exts) ? path : findExt(path, exts);
+};
+
 helpers.packagePath = function(pkg, type) {
     return (
         isString(pkg[type]) ? pkg[type] : (

@@ -18,19 +18,19 @@ function resolveFile(path, parentDirname, options) {
     } catch (e) {}
 
     if (stat && stat.isDirectory()) {
-        tmp2 = helpers.ensureExt(filePath.join(tmp1, "index"), exts);
+        tmp2 = helpers.findExt(filePath.join(tmp1, "index"), exts);
 
-        if (fs.existsSync(tmp2)) {
+        if (tmp2) {
             result.fullPath = tmp2;
-        } else if (fs.existsSync((tmp2 = helpers.ensureExt(tmp1, exts)))) {
+        } else if ((tmp2 = helpers.findExt(tmp1, exts))) {
             result.fullPath = tmp2;
         } else {
             pkg = helpers.findPackageJSON(tmp1);
 
             if (pkg !== null) {
-                tmp2 = helpers.ensureExt(filePath.join(filePath.dir(tmp1), helpers.packagePath(pkg, options.packageType)), exts);
+                tmp2 = helpers.findExt(filePath.join(filePath.dir(tmp1), helpers.packagePath(pkg, options.packageType)), exts);
 
-                if (fs.existsSync(tmp2)) {
+                if (tmp2) {
                     result.fullPath = tmp2;
                     result.pkg = pkg;
                 } else {
@@ -41,9 +41,9 @@ function resolveFile(path, parentDirname, options) {
             }
         }
     } else {
-        tmp2 = helpers.ensureExt(tmp1, exts);
+        tmp2 = helpers.findExt(tmp1, exts);
 
-        if (fs.existsSync(tmp2)) {
+        if (tmp2) {
             result.fullPath = tmp2;
         } else {
             error = true;

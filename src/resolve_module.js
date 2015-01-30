@@ -65,9 +65,8 @@ function resolveModule(path, parentDirname, options) {
             result.pkg = pkg;
             result.version = pkg.version;
 
-            tmp2 = helpers.ensureExt(filePath.join(filePath.dir(tmp1), helpers.packagePath(pkg, options.packageType)), exts);
-
-            if (fs.existsSync(tmp2)) {
+            tmp2 = helpers.findExt(filePath.join(filePath.dir(tmp1), helpers.packagePath(pkg, options.packageType)), exts);
+            if (tmp2) {
                 if (relativePath) {
                     tmp3 = filePath.join(filePath.dir(tmp2), relativePath);
 
@@ -76,23 +75,23 @@ function resolveModule(path, parentDirname, options) {
                     } catch (e) {}
 
                     if (stat && stat.isDirectory()) {
-                        tmp4 = helpers.ensureExt(filePath.join(tmp3, "index"), exts);
+                        tmp4 = helpers.findExt(filePath.join(tmp3, "index"), exts);
 
-                        if (!fs.existsSync(tmp4)) {
-                            tmp4 = helpers.ensureExt(tmp3, exts);
+                        if (tmp4) {
+                            result.fullPath = tmp4;
+                        } else {
+                            tmp4 = helpers.findExt(tmp3, exts);
 
-                            if (fs.existsSync(tmp4)) {
+                            if (tmp4) {
                                 result.fullPath = tmp4;
                             } else {
                                 error = true;
                             }
-                        } else {
-                            tmp2 = tmp;
                         }
                     } else {
-                        tmp4 = helpers.ensureExt(tmp3, exts);
+                        tmp4 = helpers.findExt(tmp3, exts);
 
-                        if (fs.existsSync(tmp4)) {
+                        if (tmp4) {
                             result.fullPath = tmp4;
                         } else {
                             error = true;
