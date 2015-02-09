@@ -7,8 +7,8 @@ var fs = require("fs"),
 var helpers = module.exports;
 
 
-helpers.readFile = function(path, encoding) {
-    return fs.readFileSync(path).toString(encoding || "utf-8");
+helpers.readFile = function(path) {
+    return fs.readFileSync(path).toString("utf-8");
 };
 
 helpers.readJSONFile = function(path) {
@@ -42,10 +42,6 @@ helpers.hasExt = function(path, exts) {
     }
 
     return (new RegExp("\\.(" + str + ")$")).test(path);
-};
-
-helpers.ensureExt = function(path, exts) {
-    return helpers.hasExt(path, exts) ? path : path + "." + (isArray(exts) ? exts[0] : exts + "");
 };
 
 function findExt(path, exts) {

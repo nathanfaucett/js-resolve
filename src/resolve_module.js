@@ -17,6 +17,7 @@ function resolveModule(path, parentDirname, options) {
         moduleName = pathParts[1],
         relativePath = pathParts[2],
 
+        moduleDirectory = options.moduleDirectory,
         builtin = options.builtin,
         exts = options.exts,
 
@@ -39,7 +40,7 @@ function resolveModule(path, parentDirname, options) {
             found = true;
         }
     } else {
-        id = "node_modules/" + moduleName + "/package.json";
+        id = moduleDirectory + "/" + moduleName + "/package.json";
         root = parentDirname;
         depth = root.split(reSpliter).length;
         tmp1 = filePath.join(root, id);
