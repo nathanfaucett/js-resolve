@@ -120,7 +120,7 @@ function resolveModule(path, parentDirname, options) {
 
     if (error) {
         if (options.throwError) {
-            throw new Error("failed to find file " + path + " required from " + parentDirname);
+            throw new Error("failed to find module " + path + " required from " + parentDirname);
         } else {
             return null;
         }
