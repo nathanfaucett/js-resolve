@@ -1,4 +1,5 @@
-var isObject = require("is_object"),
+var isArray = require("is_array"),
+    isObject = require("is_object"),
     isString = require("is_string"),
     helpers = require("./helpers"),
     resolveFile = require("./resolve_file"),
@@ -9,9 +10,13 @@ module.exports = resolve;
 
 
 function resolve(path, parentDirname, options) {
+    var exts;
+
     options = options || {};
 
-    options.extensions = options.extensions || options.exts || ["js", "json"];
+    exts = options.extensions || options.exts;
+    options.extensions = isArray(exts) ? exts : (isString(exts) ? [exts] : ["js", "json"]);
+
     options.builtin = isObject(options.builtin) ? options.builtin : {};
     options.packageType = isString(options.packageType) ? options.packageType : "browser";
     options.throwError = options.throwError != null ? !!options.throwError : true;
