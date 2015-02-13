@@ -19,7 +19,7 @@ function resolveModule(path, parentDirname, options) {
 
         moduleDirectory = options.moduleDirectory,
         builtin = options.builtin,
-        exts = options.exts,
+        exts = options.extensions,
 
         id, root, depth, builtinInfo, tmp1, tmp2, tmp3, tmp4, stat, error, found;
 

@@ -4,7 +4,7 @@ var fs = require("fs"),
     filePath = require("file_path");
 
 
-var helpers = module.exports;
+var helpers = exports;
 
 
 helpers.readFile = function(path) {

@@ -9,7 +9,7 @@ module.exports = resolveFile;
 function resolveFile(path, parentDirname, options) {
     var result = {},
         error = false,
-        exts = options.exts,
+        exts = options.extensions,
         tmp1 = filePath.join(parentDirname, path),
         stat, tmp2, pkg;
 
