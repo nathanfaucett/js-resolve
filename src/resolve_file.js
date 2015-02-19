@@ -10,7 +10,7 @@ function resolveFile(path, parentDirname, options) {
     var result = {},
         error = false,
         exts = options.extensions,
-        tmp1 = filePath.join(parentDirname, path),
+        tmp1 = filePath.isAbsolute(path) ? path : filePath.join(parentDirname, path),
         stat, tmp2, pkg;
 
     try {
