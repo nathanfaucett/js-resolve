@@ -17,6 +17,11 @@ describe("resolve(path : FilePath String, parentDirname : FilePath String, optio
 
         assert.equal(!!resolve("./empty", __dirname, options), true);
 
+        options.mappings = {
+            "is_string": "./empty"
+        };
+        assert.equal(!!resolve("is_string", __dirname, options), true);
+
         assert.equal(!!resolve("is_string", __dirname, {
                 exts: ["js", "json"],
                 throwError: false,
