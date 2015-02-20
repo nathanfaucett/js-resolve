@@ -10,7 +10,7 @@ module.exports = resolve;
 
 
 function resolve(path, parentDirname, options) {
-    var exts, mappings, map;
+    var exts, mappings, mapping;
 
     options = options || {};
 
@@ -25,11 +25,9 @@ function resolve(path, parentDirname, options) {
     options.throwError = options.throwError != null ? !!options.throwError : true;
     options.moduleDirectory = isString(options.moduleDirectory) ? options.moduleDirectory : "node_modules";
 
-    map = mappings[path];
-    if (isString(map)) {
-        path = map;
-    } else if (map === false) {
-        return false;
+    mapping = mappings[path];
+    if (isString(mapping)) {
+        path = mapping;
     }
 
     if (helpers.isNotRelative(path)) {
