@@ -3,7 +3,7 @@ var fs = require("fs"),
     helpers = require("./helpers");
 
 
-var reModuleSpliter = /([^/]*)(\/.*)?/,
+var reModuleSpliter = /([^\/]*)(\/.*)?/,
     reSpliter = /[\/]+/;
 
 
@@ -21,7 +21,7 @@ function resolveModule(path, parentDirname, options) {
         builtin = options.builtin,
         exts = options.extensions,
 
-        id, root, depth, builtinInfo, tmp1, tmp2, tmp3, tmp4, stat, error, found;
+        id, root, depth, builtinInfo, pkg, tmp1, tmp2, tmp3, tmp4, stat, error, found;
 
     if (relativePath && relativePath[0] === "/") {
         relativePath = relativePath.slice(1);
@@ -120,7 +120,10 @@ function resolveModule(path, parentDirname, options) {
 
     if (error) {
         if (options.throwError) {
-            throw new Error("failed to find module " + path + " required from " + parentDirname);
+            throw new Error(
+                "failed to find module " + path + " required from " +
+                (options.fromFilename ? options.fromFilename : parentDirname)
+            );
         } else {
             return null;
         }

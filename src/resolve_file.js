@@ -52,7 +52,10 @@ function resolveFile(path, parentDirname, options) {
 
     if (error) {
         if (options.throwError) {
-            throw new Error("failed to find file " + path + " required from " + parentDirname);
+            throw new Error(
+                "failed to find file " + path + " required from " +
+                (options.fromFilename ? options.fromFilename : parentDirname)
+            );
         } else {
             return null;
         }

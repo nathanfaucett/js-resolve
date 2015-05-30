@@ -24,6 +24,7 @@ function resolve(path, parentDirname, options) {
     options.packageType = isString(options.packageType) ? options.packageType : "browser";
     options.throwError = options.throwError != null ? !!options.throwError : true;
     options.moduleDirectory = isString(options.moduleDirectory) ? options.moduleDirectory : "node_modules";
+    options.fromFilename = isString(options.fromFilename) ? options.fromFilename : null;
 
     mapping = mappings[path];
     if (isString(mapping)) {
