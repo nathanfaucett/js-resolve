@@ -24,6 +24,7 @@ function resolve(path, requiredFromFullPath, options, callback) {
     options.builtin = options.builtin || {};
     options.mappings = options.mappings || {};
     options.extensions = options.extensions || ["js", "json"];
+    options.packageType = options.packageType || "main";
     options.modulesDirectoryName = options.modulesDirectoryName || "node_modules";
 
     if (options.mappings[path]) {

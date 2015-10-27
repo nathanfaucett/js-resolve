@@ -97,7 +97,7 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
                 tmpFullPath = findExt(filePath.join(filePath.dirname(fullPath), getPackagePath(pkg, options.packageType)), exts);
 
                 if (tmpFullPath) {
-                    return new Dependency(path, pkg);
+                    return new Dependency(tmpFullPath, pkg);
                 } else {
                     if (options.throwError) {
                         throw createError(path, requiredFromFullPath, true);

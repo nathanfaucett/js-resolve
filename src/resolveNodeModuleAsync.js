@@ -51,27 +51,27 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
                 tmpFullPath = filePath.join(filePath.dirname(fullPath), relativePath);
 
                 fs.stat(tmpFullPath, function(error, stat) {
-                    var path;
+                    var tmpFullPath2;
 
                     if (stat && stat.isDirectory()) {
-                        path = findExt(filePath.join(tmpFullPath, "index"), exts);
+                        tmpFullPath2 = findExt(filePath.join(tmpFullPath, "index"), exts);
 
-                        if (path) {
-                            callback(undefined, new Dependency(path, pkg));
+                        if (tmpFullPath2) {
+                            callback(undefined, new Dependency(tmpFullPath2, pkg));
                         } else {
-                            path = findExt(tmpFullPath, exts);
+                            tmpFullPath2 = findExt(tmpFullPath, exts);
 
-                            if (path) {
-                                callback(undefined, new Dependency(path, pkg));
+                            if (tmpFullPath2) {
+                                callback(undefined, new Dependency(tmpFullPath2, pkg));
                             } else {
                                 callback(createError(path, requiredFromFullPath, true));
                             }
                         }
                     } else {
-                        path = findExt(tmpFullPath, exts);
+                        tmpFullPath2 = findExt(tmpFullPath, exts);
 
-                        if (path) {
-                            callback(undefined, new Dependency(path, pkg));
+                        if (tmpFullPath2) {
+                            callback(undefined, new Dependency(tmpFullPath2, pkg));
                         } else {
                             callback(createError(path, requiredFromFullPath, true));
                         }
@@ -81,7 +81,7 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
                 tmpFullPath = findExt(filePath.join(filePath.dirname(fullPath), getPackagePath(pkg, options.packageType)), exts);
 
                 if (tmpFullPath) {
-                    callback(undefined, new Dependency(path, pkg));
+                    callback(undefined, new Dependency(tmpFullPath, pkg));
                 } else {
                     callback(createError(path, requiredFromFullPath, true));
                 }
