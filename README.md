@@ -1,4 +1,4 @@
 resolve
 =======
 
-resolve paths/node_modules for node.js
+resolve node type file paths

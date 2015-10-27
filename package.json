@@ -1,29 +1,37 @@
 {
   "name": "resolve",
   "version": "0.0.1",
-  "description": "resolve paths/node_modules for node.js",
+  "description": "resolve node type file paths",
   "repository": {
     "type": "git",
     "url": "https://github.com/nathanfaucett/resolve.git"
   },
   "main": "src/index.js",
+  "scripts": {
+    "test": "npm run test-node",
+    "test-node": "node ./test | ./node_modules/.bin/tap-spec",
+    "test-node-raw": "node ./test"
+  },
   "keywords": [
     "resolve",
     "resolve.js"
   ],
   "author": "Nathan Faucett",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-jsbeautifier": "^0.2.7",
-    "mocha": "^2.1.0"
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-jsbeautifier": "^0.2.10",
+    "tap-spec": "^4.1.0",
+    "tape": "^4.2.0",
+    "zuul": "^3.6.0"
   },
   "dependencies": {
-    "is_array": "nathanfaucett/is_array",
-    "is_string": "nathanfaucett/is_string",
-    "is_object": "nathanfaucett/is_object",
-    "file_path": "nathanfaucett/file_path"
+    "file_path": "git://github.com/nathanfaucett/file_path.git",
+    "is_array": "git://github.com/nathanfaucett/is_array.git",
+    "is_function": "git://github.com/nathanfaucett/is_function.git",
+    "is_null": "git://github.com/nathanfaucett/is_null.git",
+    "is_string": "git://github.com/nathanfaucett/is_string.git"
   }
 }

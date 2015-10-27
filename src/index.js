@@ -1,41 +1,46 @@
-var isArray = require("is_array"),
-    isObject = require("is_object"),
-    isString = require("is_string"),
-    helpers = require("./helpers"),
-    resolveFile = require("./resolve_file"),
-    resolveModule = require("./resolve_module");
+var isFunction = require("is_function"),
+
+    isNodeModule = require("./utils/isNodeModule"),
+
+    resolveNodeModule = require("./resolveNodeModule"),
+    resolveNodeModuleAsync = require("./resolveNodeModuleAsync"),
+
+    resolveModule = require("./resolveModule"),
+    resolveModuleAsync = require("./resolveModuleAsync");
 
 
 module.exports = resolve;
 
 
-function resolve(path, parentDirname, options) {
-    var exts, mappings, mapping;
+function resolve(path, requiredFromFullPath, options, callback) {
+    if (isFunction(options)) {
+        callback = options;
+        options = {};
+    }
 
     options = options || {};
 
-    exts = options.extensions || options.exts;
-    options.extensions = isArray(exts) ? exts : (isString(exts) ? [exts] : ["js", "json"]);
+    options.mappings = options.mappings || {};
+    options.builtin = options.builtin || {};
+    options.mappings = options.mappings || {};
+    options.extensions = options.extensions || ["js", "json"];
+    options.modulesDirectoryName = options.modulesDirectoryName || "node_modules";
 
-    mappings = isObject(options.mappings) ? options.mappings : {};
-    options.mappings = mappings;
-
-    options.builtin = isObject(options.builtin) ? options.builtin : {};
-    options.packageType = isString(options.packageType) ? options.packageType : "browser";
-    options.throwError = options.throwError != null ? !!options.throwError : true;
-    options.moduleDirectory = isString(options.moduleDirectory) ? options.moduleDirectory : "node_modules";
-    options.fromFilename = isString(options.fromFilename) ? options.fromFilename : null;
-
-    mapping = mappings[path];
-    if (isString(mapping)) {
-        path = mapping;
+    if (options.mappings[path]) {
+        path = options.mappings[path];
     }
 
-    if (helpers.isNotRelative(path)) {
-        return resolveModule(path, parentDirname, options);
+    if (isNodeModule(path)) {
+        if (isFunction(callback)) {
+            return resolveNodeModuleAsync(path, requiredFromFullPath, options, callback);
+        } else {
+            return resolveNodeModule(path, requiredFromFullPath, options);
+        }
     } else {
-        return resolveFile(path, parentDirname, options);
+        if (isFunction(callback)) {
+            return resolveModuleAsync(path, requiredFromFullPath, options, callback);
+        } else {
+            return resolveModule(path, requiredFromFullPath, options);
+        }
     }
 }
-
-resolve.helpers = helpers;
