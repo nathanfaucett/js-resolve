@@ -21,7 +21,7 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
         modulesDirectoryName = options.modulesDirectoryName,
         builtin = options.builtin,
         exts = options.extensions,
-        fullPath = null,
+        pkgFullPath = null,
         pkg = null,
         tmpFullPath;
 
@@ -30,16 +30,16 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
     }
 
     if (builtin[moduleName]) {
-        fullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(builtin[moduleName]), modulesDirectoryName);
+        pkgFullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(builtin[moduleName]), modulesDirectoryName);
     } else {
-        fullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(requiredFromFullPath), modulesDirectoryName);
+        pkgFullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(requiredFromFullPath), modulesDirectoryName);
     }
 
-    if (isNull(fullPath)) {
+    if (isNull(pkgFullPath)) {
         callback(createError(path, requiredFromFullPath, true));
     } else {
         try {
-            pkg = readJSONFile(fullPath);
+            pkg = readJSONFile(pkgFullPath);
         } catch (e) {
             pkg = null;
         }
@@ -48,7 +48,7 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
             callback(createError(path, requiredFromFullPath, true));
         } else {
             if (relativePath) {
-                tmpFullPath = filePath.join(filePath.dirname(fullPath), relativePath);
+                tmpFullPath = filePath.join(filePath.dirname(pkgFullPath), relativePath);
 
                 fs.stat(tmpFullPath, function(error, stat) {
                     var tmpFullPath2;
@@ -57,12 +57,12 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
                         tmpFullPath2 = findExt(filePath.join(tmpFullPath, "index"), exts);
 
                         if (tmpFullPath2) {
-                            callback(undefined, new Dependency(tmpFullPath2, pkg));
+                            callback(undefined, new Dependency(tmpFullPath2, pkgFullPath, pkg));
                         } else {
                             tmpFullPath2 = findExt(tmpFullPath, exts);
 
                             if (tmpFullPath2) {
-                                callback(undefined, new Dependency(tmpFullPath2, pkg));
+                                callback(undefined, new Dependency(tmpFullPath2, pkgFullPath, pkg));
                             } else {
                                 callback(createError(path, requiredFromFullPath, true));
                             }
@@ -78,10 +78,10 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
                     }
                 });
             } else {
-                tmpFullPath = findExt(filePath.join(filePath.dirname(fullPath), getPackagePath(pkg, options.packageType)), exts);
+                tmpFullPath = findExt(filePath.join(filePath.dirname(pkgFullPath), getPackagePath(pkg, options.packageType)), exts);
 
                 if (tmpFullPath) {
-                    callback(undefined, new Dependency(tmpFullPath, pkg));
+                    callback(undefined, new Dependency(tmpFullPath, pkgFullPath, pkg));
                 } else {
                     callback(createError(path, requiredFromFullPath, true));
                 }

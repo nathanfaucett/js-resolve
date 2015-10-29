@@ -21,7 +21,7 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
         modulesDirectoryName = options.modulesDirectoryName,
         builtin = options.builtin,
         exts = options.extensions,
-        fullPath = null,
+        pkgFullPath = null,
         pkg = null,
         tmpFullPath, tmpFullPath2, stat;
 
@@ -30,12 +30,12 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
     }
 
     if (builtin[moduleName]) {
-        fullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(builtin[moduleName]), modulesDirectoryName);
+        pkgFullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(builtin[moduleName]), modulesDirectoryName);
     } else {
-        fullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(requiredFromFullPath), modulesDirectoryName);
+        pkgFullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(requiredFromFullPath), modulesDirectoryName);
     }
 
-    if (isNull(fullPath)) {
+    if (isNull(pkgFullPath)) {
         if (options.throwError) {
             throw createError(path, requiredFromFullPath, true);
         } else {
@@ -43,7 +43,7 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
         }
     } else {
         try {
-            pkg = readJSONFile(fullPath);
+            pkg = readJSONFile(pkgFullPath);
         } catch (e) {
             pkg = null;
         }
@@ -56,7 +56,7 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
             }
         } else {
             if (relativePath) {
-                tmpFullPath = filePath.join(filePath.dirname(fullPath), relativePath);
+                tmpFullPath = filePath.join(filePath.dirname(pkgFullPath), relativePath);
 
                 try {
                     stat = fs.statSync(tmpFullPath);
@@ -66,12 +66,12 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
                     tmpFullPath2 = findExt(filePath.join(tmpFullPath, "index"), exts);
 
                     if (tmpFullPath2) {
-                        return new Dependency(tmpFullPath2, pkg);
+                        return new Dependency(tmpFullPath2, pkgFullPath, pkg);
                     } else {
                         tmpFullPath2 = findExt(tmpFullPath, exts);
 
                         if (tmpFullPath2) {
-                            return new Dependency(tmpFullPath2, pkg);
+                            return new Dependency(tmpFullPath2, pkgFullPath, pkg);
                         } else {
                             if (options.throwError) {
                                 throw createError(path, requiredFromFullPath, true);
@@ -84,7 +84,7 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
                     tmpFullPath2 = findExt(tmpFullPath, exts);
 
                     if (tmpFullPath2) {
-                        return new Dependency(tmpFullPath2, pkg);
+                        return new Dependency(tmpFullPath2, pkgFullPath, pkg);
                     } else {
                         if (options.throwError) {
                             throw createError(path, requiredFromFullPath, true);
@@ -94,10 +94,10 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
                     }
                 }
             } else {
-                tmpFullPath = findExt(filePath.join(filePath.dirname(fullPath), getPackagePath(pkg, options.packageType)), exts);
+                tmpFullPath = findExt(filePath.join(filePath.dirname(pkgFullPath), getPackagePath(pkg, options.packageType)), exts);
 
                 if (tmpFullPath) {
-                    return new Dependency(tmpFullPath, pkg);
+                    return new Dependency(tmpFullPath, pkgFullPath, pkg);
                 } else {
                     if (options.throwError) {
                         throw createError(path, requiredFromFullPath, true);

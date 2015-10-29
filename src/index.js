@@ -13,6 +13,8 @@ module.exports = resolve;
 
 
 function resolve(path, requiredFromFullPath, options, callback) {
+    var mapping;
+
     if (isFunction(options)) {
         callback = options;
         options = {};
@@ -27,8 +29,9 @@ function resolve(path, requiredFromFullPath, options, callback) {
     options.packageType = options.packageType || "main";
     options.modulesDirectoryName = options.modulesDirectoryName || "node_modules";
 
-    if (options.mappings[path]) {
-        path = options.mappings[path];
+    mapping = options.mappings[path];
+    if (mapping) {
+        path = mapping;
     }
 
     if (isNodeModule(path)) {
