@@ -1,5 +1,6 @@
 var fs = require("fs"),
     isNull = require("is_null"),
+    isString = require("is_string"),
     filePath = require("file_path"),
     findExt = require("./utils/findExt"),
     getPackagePath = require("./utils/getPackagePath"),
@@ -23,19 +24,29 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
         exts = options.extensions,
         pkgFullPath = null,
         pkg = null,
-        tmpFullPath, tmpFullPath2, stat;
+        isEmpty = false,
+        builtinInfo, builtinName, builtinPath, tmpFullPath, tmpFullPath2, stat;
 
     if (relativePath && relativePath[0] === "/") {
         relativePath = relativePath.slice(1);
     }
 
-    if (builtin[moduleName]) {
-        pkgFullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(builtin[moduleName]), modulesDirectoryName);
+    builtinInfo = builtin[moduleName];
+    if (builtinInfo) {
+        if (isString(builtinInfo)) {
+            builtinName = moduleName;
+            builtinPath = builtinInfo;
+        } else {
+            builtinName = builtinInfo.name || moduleName;
+            builtinPath = builtinInfo.path;
+            isEmpty = builtinInfo.empty;
+        }
+        pkgFullPath = findNodeModulePackageJSON(builtinName, filePath.dirname(builtinPath), modulesDirectoryName);
     } else {
         pkgFullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(requiredFromFullPath), modulesDirectoryName);
     }
 
-    if (isNull(pkgFullPath)) {
+    if (isNull(pkgFullPath) && isEmpty === false) {
         if (options.throwError) {
             throw createError(path, requiredFromFullPath, true);
         } else {
@@ -48,14 +59,16 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
             pkg = null;
         }
 
-        if (isNull(pkg)) {
+        if (isNull(pkg) && isEmpty === false) {
             if (options.throwError) {
                 throw createError(path, requiredFromFullPath, true);
             } else {
                 return null;
             }
         } else {
-            if (relativePath) {
+            if (isEmpty) {
+                return new Dependency(builtinPath, builtinPath, {});
+            } else if (relativePath) {
                 tmpFullPath = filePath.join(filePath.dirname(pkgFullPath), relativePath);
 
                 try {

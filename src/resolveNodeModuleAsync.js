@@ -23,14 +23,24 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
         exts = options.extensions,
         pkgFullPath = null,
         pkg = null,
-        tmpFullPath;
+        isEmpty = false,
+        builtinInfo, builtinName, builtinPath, tmpFullPath;
 
     if (relativePath && relativePath[0] === "/") {
         relativePath = relativePath.slice(1);
     }
 
-    if (builtin[moduleName]) {
-        pkgFullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(builtin[moduleName]), modulesDirectoryName);
+    builtinInfo = builtin[moduleName];
+    if (builtinInfo) {
+        if (isString(builtinInfo)) {
+            builtinName = moduleName;
+            builtinPath = builtinInfo;
+        } else {
+            builtinName = builtinInfo.name || moduleName;
+            builtinPath = builtinInfo.path;
+            isEmpty = builtinInfo.empty;
+        }
+        pkgFullPath = findNodeModulePackageJSON(builtinName, filePath.dirname(builtinPath), modulesDirectoryName);
     } else {
         pkgFullPath = findNodeModulePackageJSON(moduleName, filePath.dirname(requiredFromFullPath), modulesDirectoryName);
     }
