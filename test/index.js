@@ -18,6 +18,8 @@ tape("resolve(path : String, requiredFromFullPath : String[, options : Object][,
 
     assert.equal(!!resolve(__dirname + "/empty", __filename, options), true, "should find absolute empty file");
 
+    assert.equal(!!resolve("is_string/src/index.js", __filename, options), true, "should find file in node module");
+
     options.mappings = {
         "is_string": "./empty"
     };
