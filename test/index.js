@@ -8,18 +8,18 @@ tape("resolve(path : String, requiredFromFullPath : String[, options : Object][,
         throwError: false
     };
 
-    assert.equal(resolve("is_string", __filename, options).pkg.name, "is_string");
-    assert.equal(resolve("noop", __filename, options), null);
+    assert.equal(resolve("is_string", __filename, options).pkg.name, "is_string", "should find node module is_string");
+    assert.equal(resolve("noop", __filename, options), null), "should not find node module noop";
 
-    assert.equal(!!resolve("../src/index", __filename, options), true);
-    assert.equal(resolve("./test", __filename, options), null);
+    assert.equal(!!resolve("../src/index", __filename, options), true, "should find index.js file");
+    assert.equal(resolve("./test", __filename, options), null, "should not fing folder test");
 
-    assert.equal(!!resolve("./empty", __filename, options), true);
+    assert.equal(!!resolve("./empty", __filename, options), true, "should find empty file");
 
     options.mappings = {
         "is_string": "./empty"
     };
-    assert.equal(!!resolve("is_string", __filename, options), true);
+    assert.equal(!!resolve("is_string", __filename, options), true, "should map is_string to empty");
 
     assert.equal(!!resolve("is_string", __filename, {
             exts: ["js", "json"],
@@ -28,7 +28,8 @@ tape("resolve(path : String, requiredFromFullPath : String[, options : Object][,
                 "is_string": __filename + "/empty.js"
             }
         }),
-        true
+        true,
+        "should use empty as builtin and find it"
     );
 
     resolve("is_string", __filename, function(error, dependency) {

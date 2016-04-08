@@ -1,4 +1,5 @@
-var isFunction = require("is_function"),
+var filePath = require("file_path"),
+    isFunction = require("is_function"),
 
     isNodeModule = require("./utils/isNodeModule"),
 
@@ -13,7 +14,8 @@ module.exports = resolve;
 
 
 function resolve(path, requiredFromFullPath, options, callback) {
-    var mapping;
+    var posixPath = filePath.posix(path),
+        mapping;
 
     if (isFunction(options)) {
         callback = options;
@@ -29,22 +31,22 @@ function resolve(path, requiredFromFullPath, options, callback) {
     options.packageType = options.packageType || "main";
     options.modulesDirectoryName = options.modulesDirectoryName || "node_modules";
 
-    mapping = options.mappings[path];
+    mapping = options.mappings[posixPath];
     if (mapping) {
-        path = mapping;
+        posixPath = mapping;
     }
 
-    if (isNodeModule(path)) {
+    if (isNodeModule(posixPath)) {
         if (isFunction(callback)) {
-            return resolveNodeModuleAsync(path, requiredFromFullPath, options, callback);
+            return resolveNodeModuleAsync(posixPath, requiredFromFullPath, options, callback);
         } else {
-            return resolveNodeModule(path, requiredFromFullPath, options);
+            return resolveNodeModule(posixPath, requiredFromFullPath, options);
         }
     } else {
         if (isFunction(callback)) {
-            return resolveModuleAsync(path, requiredFromFullPath, options, callback);
+            return resolveModuleAsync(posixPath, requiredFromFullPath, options, callback);
         } else {
-            return resolveModule(path, requiredFromFullPath, options);
+            return resolveModule(posixPath, requiredFromFullPath, options);
         }
     }
 }
