@@ -14,8 +14,9 @@ module.exports = resolve;
 
 
 function resolve(path, requiredFromFullPath, options, callback) {
-    var posixPath = filePath.posix(path),
-        mapping;
+    var mapping;
+
+    path = filePath.slash(path);
 
     if (isFunction(options)) {
         callback = options;
@@ -31,22 +32,22 @@ function resolve(path, requiredFromFullPath, options, callback) {
     options.packageType = options.packageType || "main";
     options.modulesDirectoryName = options.modulesDirectoryName || "node_modules";
 
-    mapping = options.mappings[posixPath];
+    mapping = options.mappings[path];
     if (mapping) {
-        posixPath = mapping;
+        path = mapping;
     }
 
-    if (isNodeModule(posixPath)) {
+    if (isNodeModule(path)) {
         if (isFunction(callback)) {
-            return resolveNodeModuleAsync(posixPath, requiredFromFullPath, options, callback);
+            return resolveNodeModuleAsync(path, requiredFromFullPath, options, callback);
         } else {
-            return resolveNodeModule(posixPath, requiredFromFullPath, options);
+            return resolveNodeModule(path, requiredFromFullPath, options);
         }
     } else {
         if (isFunction(callback)) {
-            return resolveModuleAsync(posixPath, requiredFromFullPath, options, callback);
+            return resolveModuleAsync(path, requiredFromFullPath, options, callback);
         } else {
-            return resolveModule(posixPath, requiredFromFullPath, options);
+            return resolveModule(path, requiredFromFullPath, options);
         }
     }
 }

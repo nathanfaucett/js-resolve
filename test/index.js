@@ -12,9 +12,11 @@ tape("resolve(path : String, requiredFromFullPath : String[, options : Object][,
     assert.equal(resolve("noop", __filename, options), null), "should not find node module noop";
 
     assert.equal(!!resolve("../src/index", __filename, options), true, "should find index.js file");
-    assert.equal(resolve("./test", __filename, options), null, "should not fing folder test");
+    assert.equal(resolve("./test", __filename, options), null, "should not find folder test");
 
     assert.equal(!!resolve("./empty", __filename, options), true, "should find empty file");
+
+    assert.equal(!!resolve(__dirname + "/empty", __filename, options), true, "should find absolute empty file");
 
     options.mappings = {
         "is_string": "./empty"
