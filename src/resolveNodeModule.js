@@ -28,7 +28,7 @@ function resolveNodeModule(path, requiredFromFullPath, options) {
         isEmpty = false,
         builtinInfo, builtinName, builtinPath, tmpFullPath, tmpFullPath2, stat;
 
-    if (relativePath && relativePath[0] === "/") {
+    if (relativePath && filePath.isAbsolute(relativePath)) {
         relativePath = relativePath.slice(1);
     }
 

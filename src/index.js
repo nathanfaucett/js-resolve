@@ -1,4 +1,5 @@
 var isFunction = require("@nathanfaucett/is_function"),
+    filePath = require("@nathanfaucett/file_path"),
 
     isNodeModule = require("./utils/isNodeModule"),
 
@@ -14,6 +15,8 @@ module.exports = resolve;
 
 function resolve(path, requiredFromFullPath, options, callback) {
     var mapping;
+
+    path = filePath.slash(path);
 
     if (isFunction(options)) {
         callback = options;

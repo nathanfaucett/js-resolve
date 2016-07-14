@@ -1,7 +1,9 @@
+var filePath = require("@nathanfaucett/file_path");
+
+
 module.exports = isNodeModule;
 
 
 function isNodeModule(path) {
-    var ch = path.charAt(0);
-    return ch !== "." && ch !== "/";
+    return path[0] !== "." && !filePath.isAbsolute(path);
 }
