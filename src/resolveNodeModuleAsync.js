@@ -1,6 +1,6 @@
 var fs = require("fs"),
-    isNull = require("is_null"),
-    filePath = require("file_path"),
+    isNull = require("@nathanfaucett/is_null"),
+    filePath = require("@nathanfaucett/file_path"),
     findExt = require("./utils/findExt"),
     getPackagePath = require("./utils/getPackagePath"),
     readJSONFile = require("./utils/readJSONFile"),
@@ -14,9 +14,10 @@ module.exports = resolveNodeModuleAsync;
 
 
 function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
-    var nodeModuleParts = path.split(reModuleSpliter),
-        moduleName = nodeModuleParts[1],
-        relativePath = nodeModuleParts[2],
+    var nodeModuleParts = path.match(reModuleSpliter),
+        scopeName = nodeModuleParts[1],
+        moduleName = (scopeName ? scopeName + "/" : "") + nodeModuleParts[3],
+        relativePath = nodeModuleParts[4],
 
         modulesDirectoryName = options.modulesDirectoryName,
         builtin = options.builtin,
@@ -25,6 +26,7 @@ function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
         pkg = null,
         isEmpty = false,
         builtinInfo, builtinName, builtinPath, tmpFullPath;
+
 
     if (relativePath && relativePath[0] === "/") {
         relativePath = relativePath.slice(1);

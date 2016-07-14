@@ -1,5 +1,5 @@
 var fs = require("fs"),
-    filePath = require("file_path");
+    filePath = require("@nathanfaucett/file_path");
 
 
 module.exports = findPackageJSON;

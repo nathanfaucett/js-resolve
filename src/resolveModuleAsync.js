@@ -1,5 +1,5 @@
 var fs = require("fs"),
-    filePath = require("file_path"),
+    filePath = require("@nathanfaucett/file_path"),
     findExt = require("./utils/findExt"),
     getPackagePath = require("./utils/getPackagePath"),
     findPackageJSON = require("./utils/findPackageJSON"),

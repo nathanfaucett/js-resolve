@@ -8,7 +8,8 @@ tape("resolve(path : String, requiredFromFullPath : String[, options : Object][,
         throwError: false
     };
 
-    assert.equal(resolve("is_string", __filename, options).pkg.name, "is_string");
+    assert.equal(resolve("@nathanfaucett/is_string", __filename, options).pkg.name, "@nathanfaucett/is_string");
+    assert.equal(resolve("@nathanfaucett/is_string/src/index.js", __filename, options).pkg.name, "@nathanfaucett/is_string");
     assert.equal(resolve("noop", __filename, options), null);
 
     assert.equal(!!resolve("../src/index", __filename, options), true);
@@ -19,20 +20,20 @@ tape("resolve(path : String, requiredFromFullPath : String[, options : Object][,
     options.mappings = {
         "is_string": "./empty"
     };
-    assert.equal(!!resolve("is_string", __filename, options), true);
+    assert.equal(!!resolve("@nathanfaucett/is_string", __filename, options), true);
 
-    assert.equal(!!resolve("is_string", __filename, {
+    assert.equal(!!resolve("@nathanfaucett/is_string", __filename, {
             exts: ["js", "json"],
             throwError: false,
             builtin: {
-                "is_string": __filename + "/empty.js"
+                "@nathanfaucett/is_string": __filename + "/empty.js"
             }
         }),
         true
     );
 
-    resolve("is_string", __filename, function(error, dependency) {
-        assert.equal(dependency.pkg.name, "is_string");
+    resolve("@nathanfaucett/is_string", __filename, function(error, dependency) {
+        assert.equal(dependency.pkg.name, "@nathanfaucett/is_string");
         assert.end();
     });
 });
