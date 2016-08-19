@@ -17,7 +17,7 @@ module.exports = resolveNodeModule;
 function resolveNodeModule(path, requiredFromFullPath, options) {
     var nodeModuleParts = path.match(reModuleSpliter),
         scopeName = nodeModuleParts[1],
-        moduleName = (scopeName ? scopeName + "/" : "") + nodeModuleParts[3],
+        moduleName = (scopeName ? scopeName + filePath.separator : "") + nodeModuleParts[3],
         relativePath = nodeModuleParts[4],
 
         modulesDirectoryName = options.modulesDirectoryName,

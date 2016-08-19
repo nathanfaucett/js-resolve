@@ -16,7 +16,7 @@ module.exports = resolveNodeModuleAsync;
 function resolveNodeModuleAsync(path, requiredFromFullPath, options, callback) {
     var nodeModuleParts = path.match(reModuleSpliter),
         scopeName = nodeModuleParts[1],
-        moduleName = (scopeName ? scopeName + "/" : "") + nodeModuleParts[3],
+        moduleName = (scopeName ? scopeName + filePath.separator : "") + nodeModuleParts[3],
         relativePath = nodeModuleParts[4],
 
         modulesDirectoryName = options.modulesDirectoryName,
