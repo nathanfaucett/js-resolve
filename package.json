@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/resolve",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "resolve node type file paths",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "zuul": "^3.6.0"
   },
   "dependencies": {
-    "@nathanfaucett/file_path": "^0.0.2",
+    "@nathanfaucett/file_path": "^0.0.4",
     "@nathanfaucett/is_array": "^0.0.1",
     "@nathanfaucett/is_function": "^0.0.1",
     "@nathanfaucett/is_null": "^0.0.1",

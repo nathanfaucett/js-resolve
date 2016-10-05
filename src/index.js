@@ -14,9 +14,11 @@ module.exports = resolve;
 
 
 function resolve(path, requiredFromFullPath, options, callback) {
-    var mapping;
+    var origPath = path,
+        mapping;
 
     path = filePath.slash(path);
+    requiredFromFullPath = filePath.slash(requiredFromFullPath);
 
     if (isFunction(options)) {
         callback = options;
@@ -32,9 +34,9 @@ function resolve(path, requiredFromFullPath, options, callback) {
     options.packageType = options.packageType || "main";
     options.modulesDirectoryName = options.modulesDirectoryName || "node_modules";
 
-    mapping = options.mappings[path];
+    mapping = options.mappings[origPath] || options.mappings[path];
     if (mapping) {
-        path = mapping;
+        path = filePath.slash(mapping);
     }
 
     if (isNodeModule(path)) {
